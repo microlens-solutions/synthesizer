@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Microlens.Synthesizer.Core/Microlens.Synthesizer.Core.csproj" Id="bdee8505-37c9-47e0-b5f9-0348a0e1db27" />
+  <Project Path="Microlens.Synthesizer.Playground/Microlens.Synthesizer.Playground.csproj" Id="62aa2881-5ea8-47e2-971e-48ffc45fdf33" />
+  <Project Path="Microlens.Synthesizer.V6/Microlens.Synthesizer.V6.csproj">
+    <Deploy />
+  </Project>
+</Solution>
