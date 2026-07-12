@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microlens.Synthesizer.Core.Normalizers;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
@@ -34,13 +35,12 @@ public sealed class ClassAnalyzer {
         }
 
         var properties = new List<PropertyMetadata>();
+        var normalizer = new TypeNormalizer();
 
         foreach (var member in classNode.Members) {
             if (member is not PropertyDeclarationSyntax property) {
                 continue;
             }
-
-            var normalizer = new TypeNormalizer();
 
             properties.Add(new PropertyMetadata {
                 Name = property.Identifier.Text,

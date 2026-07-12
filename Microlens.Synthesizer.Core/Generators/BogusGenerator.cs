@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microlens.Synthesizer.Core.Providers;
 using System.Text;
 
 namespace Microlens.Synthesizer.Core.Generators;
@@ -7,7 +8,11 @@ public sealed class BogusGenerator {
     private readonly PropertyRuleGenerator _propertyRuleGenerator;
 
     public BogusGenerator() {
-        _propertyRuleGenerator = new PropertyRuleGenerator();
+        _propertyRuleGenerator = new PropertyRuleGenerator([
+            new StringRuleProvider(),
+            new IntegerRuleProvider(),
+            new GuidRuleProvider()
+        ]);
     }
 
     public string Generate(ClassMetadata metadata) {
