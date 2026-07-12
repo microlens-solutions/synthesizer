@@ -1,10 +1,10 @@
-﻿using Microlens.Synthesizer.Core.Domain;
+﻿using Microlens.Synthesizer.Core.Metadata;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 
-namespace Microlens.Synthesizer.Core.Analysis;
+namespace Microlens.Synthesizer.Core.Analyzers;
 
 public sealed class ClassAnalyzer {
     public ClassMetadata Analyze(string sourceCode) {
@@ -40,9 +40,11 @@ public sealed class ClassAnalyzer {
                 continue;
             }
 
+            var normalizer = new TypeNormalizer();
+
             properties.Add(new PropertyMetadata {
                 Name = property.Identifier.Text,
-                TypeName = property.Type?.ToString() ?? string.Empty
+                TypeName = normalizer.Normalize(property.Type?.ToString() ?? string.Empty)
             });
         }
 

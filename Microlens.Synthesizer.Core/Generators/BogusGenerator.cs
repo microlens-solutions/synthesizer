@@ -1,7 +1,7 @@
-﻿using Microlens.Synthesizer.Core.Domain;
+﻿using Microlens.Synthesizer.Core.Metadata;
 using System.Text;
 
-namespace Microlens.Synthesizer.Core.Generate;
+namespace Microlens.Synthesizer.Core.Generators;
 
 public sealed class BogusGenerator {
     private readonly PropertyRuleGenerator _propertyRuleGenerator;

@@ -1,4 +1,4 @@
-﻿namespace Microlens.Synthesizer.Core.Domain;
+﻿namespace Microlens.Synthesizer.Core.Metadata;
 
 public sealed class PropertyMetadata {
     public string Name { get; set; } = string.Empty;
