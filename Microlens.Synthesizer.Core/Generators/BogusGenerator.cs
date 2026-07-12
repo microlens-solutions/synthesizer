@@ -8,11 +8,7 @@ public sealed class BogusGenerator {
     private readonly PropertyRuleGenerator _propertyRuleGenerator;
 
     public BogusGenerator() {
-        _propertyRuleGenerator = new PropertyRuleGenerator([
-            new StringRuleProvider(),
-            new IntegerRuleProvider(),
-            new GuidRuleProvider()
-        ]);
+        _propertyRuleGenerator = new PropertyRuleGenerator(ProviderFactory.Provide());
     }
 
     public string Generate(ClassMetadata metadata) {

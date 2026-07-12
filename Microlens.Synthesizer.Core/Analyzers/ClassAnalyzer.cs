@@ -8,6 +8,8 @@ using System.Collections.Generic;
 namespace Microlens.Synthesizer.Core.Analyzers;
 
 public sealed class ClassAnalyzer {
+    private readonly TypeNormalizer _normalizer = new();
+
     public ClassMetadata Analyze(string sourceCode) {
         var tree = CSharpSyntaxTree.ParseText(sourceCode);
         var root = tree.GetCompilationUnitRoot();
@@ -35,7 +37,6 @@ public sealed class ClassAnalyzer {
         }
 
         var properties = new List<PropertyMetadata>();
-        var normalizer = new TypeNormalizer();
 
         foreach (var member in classNode.Members) {
             if (member is not PropertyDeclarationSyntax property) {
@@ -44,7 +45,7 @@ public sealed class ClassAnalyzer {
 
             properties.Add(new PropertyMetadata {
                 Name = property.Identifier.Text,
-                TypeName = normalizer.Normalize(property.Type?.ToString() ?? string.Empty)
+                TypeName = _normalizer.Normalize(property.Type?.ToString() ?? string.Empty)
             });
         }
 
