@@ -11,7 +11,7 @@ public sealed class ClassAnalyzer {
     public ClassMetadata Analyze(string sourceCode) {
         var tree = CSharpSyntaxTree.ParseText(sourceCode);
         var root = tree.GetCompilationUnitRoot();
-        ClassDeclarationSyntax classNode = null;
+        ClassDeclarationSyntax? classNode = null;
 
         foreach (var node in root.DescendantNodes()) {
             if (node is ClassDeclarationSyntax classDeclaration) {
