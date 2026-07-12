@@ -10,16 +10,16 @@ public sealed class BogusGenerator {
         _propertyRuleGenerator = new PropertyRuleGenerator();
     }
 
-    public string Generate(ClassDomain classDomain) {
-        var rules = GenerateRules(classDomain);
+    public string Generate(ClassMetadata metadata) {
+        var rules = GenerateRules(metadata);
 
         return $$"""
 using Bogus;
 
-namespace {{classDomain.Namespace}};
+namespace {{metadata.Namespace}};
 
-public class {{classDomain.ClassName}}Faker : Faker<{{classDomain.ClassName}}> {
-    public {{classDomain.ClassName}}Faker() {
+public class {{metadata.ClassName}}Faker : Faker<{{metadata.ClassName}}> {
+    public {{metadata.ClassName}}Faker() {
         {{rules}}
     }
 }
@@ -27,11 +27,11 @@ public class {{classDomain.ClassName}}Faker : Faker<{{classDomain.ClassName}}> {
 """;
     }
 
-    private string GenerateRules(ClassDomain classDomain) {
+    private string GenerateRules(ClassMetadata metadata) {
         var builder = new StringBuilder();
         int count = 0;
 
-        foreach (var property in classDomain.Properties) {
+        foreach (var property in metadata.Properties) {
             count++;
 
             if (count > 1) {
@@ -40,7 +40,7 @@ public class {{classDomain.ClassName}}Faker : Faker<{{classDomain.ClassName}}> {
 
             _ = builder.Append(_propertyRuleGenerator.Generate(property));
 
-            if (count < classDomain.Properties.Count) {
+            if (count < metadata.Properties.Count) {
                 _ = builder.Append("\n");
             }
         }

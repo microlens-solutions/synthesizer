@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Microlens.Synthesizer.Core.Analysis;
 
 public sealed class ClassAnalyzer {
-    public ClassDomain Analyze(string sourceCode) {
+    public ClassMetadata Analyze(string sourceCode) {
         var tree = CSharpSyntaxTree.ParseText(sourceCode);
         var root = tree.GetCompilationUnitRoot();
         ClassDeclarationSyntax classNode = null;
@@ -33,20 +33,20 @@ public sealed class ClassAnalyzer {
             }
         }
 
-        var properties = new List<PropertyDomain>();
+        var properties = new List<PropertyMetadata>();
 
         foreach (var member in classNode.Members) {
             if (member is not PropertyDeclarationSyntax property) {
                 continue;
             }
 
-            properties.Add(new PropertyDomain {
+            properties.Add(new PropertyMetadata {
                 Name = property.Identifier.Text,
                 TypeName = property.Type?.ToString() ?? string.Empty
             });
         }
 
-        return new ClassDomain {
+        return new ClassMetadata {
             Namespace = namespaceName,
             ClassName = classNode.Identifier.Text,
             Properties = properties
