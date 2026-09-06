@@ -3,12 +3,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class IntegerRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class CharRuleProvider : ProviderBase, IPropertyRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type.SpecialType == SpecialType.System_Int32;
+        return metadata.Type.SpecialType == SpecialType.System_Char;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Int");
+        return Generate(metadata.Name, "Random.Char");
     }
 }
