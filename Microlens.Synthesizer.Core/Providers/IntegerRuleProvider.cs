@@ -1,13 +1,14 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class IntegerRuleProvider : IPropertyRuleProvider {
+public sealed class IntegerRuleProvider : ProviderBase, IPropertyRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.TypeName == "int";
+        return metadata.Type.SpecialType == SpecialType.System_Int32;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return $"RuleFor(x => x.{metadata.Name}, f => f.Random.Int());";
+        return Generate(metadata.Name, "Random.Int");
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
 using Microlens.Synthesizer.Core.Providers;
+using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Generators;
@@ -14,6 +15,6 @@ public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> p
             }
         }
 
-        return $"// TODO: {metadata.Name} ({metadata.TypeName})";
+        return $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})";
     }
 }

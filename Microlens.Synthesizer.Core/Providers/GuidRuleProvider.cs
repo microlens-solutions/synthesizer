@@ -2,12 +2,12 @@
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class GuidRuleProvider : IPropertyRuleProvider {
+public sealed class GuidRuleProvider : ProviderBase, IPropertyRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.TypeName == "Guid";
+        return metadata.Type is { Name: "Guid", ContainingNamespace.Name: "System" };
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return $"RuleFor(x => x.{metadata.Name}, f => f.Random.Guid());";
+        return Generate(metadata.Name, "Random.Guid");
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace Microlens.Synthesizer.Core.Metadata;
+﻿using Microsoft.CodeAnalysis;
 
-public sealed class PropertyMetadata {
-    public string Name { get; set; } = string.Empty;
+namespace Microlens.Synthesizer.Core.Metadata;
 
-    public string TypeName { get; set; } = string.Empty;
+public sealed class PropertyMetadata(string name, ITypeSymbol type) {
+    public string Name { get; } = name;
+
+    public ITypeSymbol Type { get; } = type;
 }

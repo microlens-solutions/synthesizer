@@ -1,13 +1,14 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class StringRuleProvider : IPropertyRuleProvider {
+public sealed class StringRuleProvider : ProviderBase, IPropertyRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.TypeName == "string";
+        return metadata.Type.SpecialType == SpecialType.System_String;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return $"RuleFor(x => x.{metadata.Name}, f => f.Name.FullName());";
+        return Generate(metadata.Name, "Name.FullName");
     }
 }
