@@ -17,7 +17,8 @@ public static class ProviderFactory {
             new DecimalRuleProvider(),
             new DateTimeRuleProvider(),
             new DateTimeOffsetRuleProvider(),
-            new GuidRuleProvider()
+            new GuidRuleProvider(),
+            new EnumRuleProvider()
         ];
     }
 }

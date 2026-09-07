@@ -17,4 +17,16 @@ public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> p
 
         return $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})";
     }
+
+    public string? GetRequiredNamespace(PropertyMetadata metadata) {
+        foreach (var provider in _providers) {
+            if (!provider.CanHandle(metadata)) {
+                continue;
+            }
+
+            return provider is INamespaceAwareRuleProvider namespaceAware ? namespaceAware.GetRequiredNamespace(metadata) : null;
+        }
+
+        return null;
+    }
 }
