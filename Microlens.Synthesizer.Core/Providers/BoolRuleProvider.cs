@@ -9,6 +9,6 @@ public sealed class BoolRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Bool");
+        return Generate("Random.Bool");
     }
 }

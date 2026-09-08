@@ -6,27 +6,37 @@ using System.Collections.Generic;
 namespace Microlens.Synthesizer.Core.Generators;
 
 public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> providers) {
-    private readonly IReadOnlyList<IPropertyRuleProvider> _providers = providers;
-
     public string Generate(PropertyMetadata metadata) {
-        foreach (var provider in _providers) {
+        var expression = GenerateExpression(metadata);
+
+        return expression is null
+            ? $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})"
+            : $"RuleFor(x => x.{metadata.Name}, f => {expression});";
+    }
+
+    public string? GenerateExpression(PropertyMetadata metadata) {
+        foreach (var provider in providers) {
             if (provider.CanHandle(metadata)) {
                 return provider.Generate(metadata);
             }
         }
 
-        return $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})";
+        return null;
     }
 
-    public string? GetRequiredNamespace(PropertyMetadata metadata) {
-        foreach (var provider in _providers) {
+    public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
+        foreach (var provider in providers) {
             if (!provider.CanHandle(metadata)) {
                 continue;
             }
 
-            return provider is INamespaceAwareRuleProvider namespaceAware ? namespaceAware.GetRequiredNamespace(metadata) : null;
-        }
+            if (provider is INamespaceAwareRuleProvider namespaceAware) {
+                foreach (var ns in namespaceAware.GetRequiredNamespaces(metadata)) {
+                    yield return ns;
+                }
+            }
 
-        return null;
+            yield break;
+        }
     }
 }

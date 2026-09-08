@@ -8,6 +8,6 @@ public sealed class DateTimeOffsetRuleProvider : ProviderBase, IPropertyRuleProv
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Date.PastOffset");
+        return Generate("Date.PastOffset");
     }
 }

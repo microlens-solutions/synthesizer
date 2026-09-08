@@ -1,7 +1,8 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
 public interface INamespaceAwareRuleProvider {
-    string? GetRequiredNamespace(PropertyMetadata metadata);
+    IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata);
 }

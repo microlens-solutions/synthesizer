@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Providers;
 using System.Collections.Generic;
 using System.Text;
@@ -6,10 +7,12 @@ using System.Text;
 namespace Microlens.Synthesizer.Core.Generators;
 
 public sealed class BogusGenerator {
-    private readonly PropertyRuleGenerator _propertyRuleGenerator;
+    private readonly PropertyRuleGenerator _generator;
 
-    public BogusGenerator() {
-        _propertyRuleGenerator = new PropertyRuleGenerator(ProviderFactory.Provide());
+    public BogusGenerator(BogusOptions options) {
+        var providers = new List<IPropertyRuleProvider>();
+        _generator = new PropertyRuleGenerator(providers);
+        providers.AddRange(ProviderFactory.Provide(options, _generator.GenerateExpression, _generator.GetRequiredNamespaces));
     }
 
     public string Generate(ClassMetadata metadata) {
@@ -35,14 +38,14 @@ public class {{metadata.ClassName}}Faker : Faker<{{metadata.ClassName}}> {
         var builder = new StringBuilder();
 
         foreach (var property in metadata.Properties) {
-            var requiredNamespace = _propertyRuleGenerator.GetRequiredNamespace(property);
+            foreach (var requiredNamespace in _generator.GetRequiredNamespaces(property)) {
+                if (requiredNamespace == metadata.Namespace) {
+                    continue;
+                }
 
-            if (requiredNamespace is null || requiredNamespace == metadata.Namespace) {
-                continue;
-            }
-
-            if (seen.Add(requiredNamespace)) {
-                _ = builder.Append("using ").Append(requiredNamespace).Append(";\n");
+                if (seen.Add(requiredNamespace)) {
+                    _ = builder.Append("using ").Append(requiredNamespace).Append(";\n");
+                }
             }
         }
 
@@ -60,7 +63,7 @@ public class {{metadata.ClassName}}Faker : Faker<{{metadata.ClassName}}> {
                 _ = builder.Append("\t\t");
             }
 
-            _ = builder.Append(_propertyRuleGenerator.Generate(property));
+            _ = builder.Append(_generator.Generate(property));
 
             if (count < metadata.Properties.Count) {
                 _ = builder.Append("\n");

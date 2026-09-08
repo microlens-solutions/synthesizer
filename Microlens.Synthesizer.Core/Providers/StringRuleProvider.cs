@@ -9,6 +9,6 @@ public sealed class StringRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Name.FullName");
+        return Generate("Name.FullName");
     }
 }

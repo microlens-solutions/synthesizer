@@ -9,6 +9,6 @@ public sealed class ShortRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Short");
+        return Generate("Random.Short");
     }
 }

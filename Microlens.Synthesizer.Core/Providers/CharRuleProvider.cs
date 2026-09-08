@@ -9,6 +9,6 @@ public sealed class CharRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Char");
+        return Generate("Random.Char");
     }
 }

@@ -9,6 +9,6 @@ public sealed class FloatRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Float");
+        return Generate("Random.Float");
     }
 }

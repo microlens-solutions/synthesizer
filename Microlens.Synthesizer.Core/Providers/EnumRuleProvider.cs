@@ -1,5 +1,6 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
 using Microsoft.CodeAnalysis;
+using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
@@ -9,10 +10,12 @@ public sealed class EnumRuleProvider : ProviderBase, IPropertyRuleProvider, INam
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, $"PickRandom<{metadata.Type.Name}>");
+        return Generate($"PickRandom<{metadata.Type.Name}>");
     }
 
-    public string? GetRequiredNamespace(PropertyMetadata metadata) {
-        return metadata.Type.ContainingNamespace.IsGlobalNamespace ? null : metadata.Type.ContainingNamespace.ToDisplayString();
+    public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
+        if (!metadata.Type.ContainingNamespace.IsGlobalNamespace) {
+            yield return metadata.Type.ContainingNamespace.ToDisplayString();
+        }
     }
 }

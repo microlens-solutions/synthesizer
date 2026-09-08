@@ -9,6 +9,6 @@ public sealed class DateTimeRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Date.Past");
+        return Generate("Date.Past");
     }
 }

@@ -9,6 +9,6 @@ public sealed class LongRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Long");
+        return Generate("Random.Long");
     }
 }

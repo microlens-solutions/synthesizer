@@ -9,6 +9,6 @@ public sealed class DecimalRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Finance.Amount");
+        return Generate("Finance.Amount");
     }
 }

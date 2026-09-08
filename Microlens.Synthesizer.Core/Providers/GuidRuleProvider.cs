@@ -8,6 +8,6 @@ public sealed class GuidRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Guid");
+        return Generate("Random.Guid");
     }
 }

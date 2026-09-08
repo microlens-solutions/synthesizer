@@ -9,6 +9,6 @@ public sealed class IntRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Int");
+        return Generate("Random.Int");
     }
 }

@@ -9,6 +9,6 @@ public sealed class DoubleRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Double");
+        return Generate("Random.Double");
     }
 }

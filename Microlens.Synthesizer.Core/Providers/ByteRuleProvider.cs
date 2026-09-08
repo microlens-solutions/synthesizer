@@ -9,6 +9,6 @@ public sealed class ByteRuleProvider : ProviderBase, IPropertyRuleProvider {
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate(metadata.Name, "Random.Byte");
+        return Generate("Random.Byte");
     }
 }
