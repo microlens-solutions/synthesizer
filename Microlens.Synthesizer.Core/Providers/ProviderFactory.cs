@@ -1,12 +1,11 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
-using Microlens.Synthesizer.Core.Options;
 using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
 public static class ProviderFactory {
-    public static IReadOnlyList<IPropertyRuleProvider> Provide(BogusOptions options, Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) {
+    public static IReadOnlyList<IPropertyRuleProvider> Provide(Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) {
         return [
             new BoolRuleProvider(),
             new CharRuleProvider(),
@@ -22,8 +21,8 @@ public static class ProviderFactory {
             new DateTimeOffsetRuleProvider(),
             new GuidRuleProvider(),
             new EnumRuleProvider(),
-            new CollectionRuleProvider(options, generateExpression, getRequiredNamespaces),
-            new DictionaryRuleProvider(options, generateExpression, getRequiredNamespaces)
+            new CollectionRuleProvider(generateExpression, getRequiredNamespaces),
+            new DictionaryRuleProvider(generateExpression, getRequiredNamespaces)
         ];
     }
 }

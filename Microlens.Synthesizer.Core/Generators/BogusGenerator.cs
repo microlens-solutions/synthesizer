@@ -1,6 +1,6 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
-using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Providers;
+using Microlens.Synthesizer.Core.Shared;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,10 +9,10 @@ namespace Microlens.Synthesizer.Core.Generators;
 public sealed class BogusGenerator {
     private readonly PropertyRuleGenerator _generator;
 
-    public BogusGenerator(BogusOptions options) {
+    public BogusGenerator() {
         var providers = new List<IPropertyRuleProvider>();
         _generator = new PropertyRuleGenerator(providers);
-        providers.AddRange(ProviderFactory.Provide(options, _generator.GenerateExpression, _generator.GetRequiredNamespaces));
+        providers.AddRange(ProviderFactory.Provide(_generator.GenerateExpression, _generator.GetRequiredNamespaces));
     }
 
     public string Generate(ClassMetadata metadata) {
@@ -24,8 +24,8 @@ using Bogus;
 {{usings}}
 namespace {{metadata.Namespace}};
 
-public class {{metadata.ClassName}}Faker : Faker<{{metadata.ClassName}}> {
-    public {{metadata.ClassName}}Faker() {
+public class {{metadata.ClassName}}{{Registry.FakerSuffix}} : Faker<{{metadata.ClassName}}> {
+    public {{metadata.ClassName}}{{Registry.FakerSuffix}}() {
         {{rules}}
     }
 }

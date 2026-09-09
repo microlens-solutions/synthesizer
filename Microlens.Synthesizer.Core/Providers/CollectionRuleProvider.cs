@@ -1,5 +1,4 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
-using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
 using System;
@@ -7,25 +6,22 @@ using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class CollectionRuleProvider(BogusOptions options, Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
+public sealed class CollectionRuleProvider(Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return TryGetElementType(metadata.Type, out var type, out _) && generateExpression(new PropertyMetadata(string.Empty, type)) is not null;
+        return TryGetElementType(metadata.Type, out var type, out _) && generateExpression(new PropertyMetadata(metadata.Name, type)) is not null;
     }
 
     public string Generate(PropertyMetadata metadata) {
         _ = TryGetElementType(metadata.Type, out var type, out var kind);
 
-        var expression = generateExpression(new PropertyMetadata(string.Empty, type));
-        var made = $"f.Make({options.ElementCount}, () => {expression})";
+        var expression = generateExpression(new PropertyMetadata(metadata.Name, type));
+        var made = $"f.Make({Registry.ElementCount}, () => {expression})";
 
-        if (kind == Registry.CollectionKind.Array) {
-            return $"{made}.ToArray()";
-        }
-        else if (kind == Registry.CollectionKind.HashSet) {
-            return $"new HashSet<{type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}>({made})";
-        }
-
-        return made;
+        return kind switch {
+            Registry.CollectionKind.Array => $"{made}.ToArray()",
+            Registry.CollectionKind.HashSet => $"new HashSet<{type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}>({made})",
+            _ => made
+        };
     }
 
     public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
@@ -37,7 +33,7 @@ public sealed class CollectionRuleProvider(BogusOptions options, Func<PropertyMe
             yield return "System.Collections.Generic";
         }
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(string.Empty, type))) {
+        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, type))) {
             yield return ns;
         }
     }

@@ -1,22 +1,22 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
-using Microlens.Synthesizer.Core.Options;
+using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class DictionaryRuleProvider(BogusOptions options, Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
+public sealed class DictionaryRuleProvider(Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return TryGetKeyValueTypes(metadata.Type, out var key, out var value) && generateExpression(new PropertyMetadata(string.Empty, key)) is not null && generateExpression(new PropertyMetadata(string.Empty, value)) is not null;
+        return TryGetKeyValueTypes(metadata.Type, out var key, out var value) && generateExpression(new PropertyMetadata(metadata.Name, key)) is not null && generateExpression(new PropertyMetadata(metadata.Name, value)) is not null;
     }
 
     public string Generate(PropertyMetadata metadata) {
         _ = TryGetKeyValueTypes(metadata.Type, out var key, out var value);
-        var (keyName, keyExpression) = GetAttributes(key);
-        var (valueName, valueExpression) = GetAttributes(value);
+        var (keyDisplay, keyExpression) = GetAttributes(metadata.Name, key);
+        var (valueDisplay, valueExpression) = GetAttributes(metadata.Name, value);
 
-        return $"{{ var map = new Dictionary<{keyName}, {valueName}>(); for (int i = 0; i < {options.ElementCount}; i++) {{ map[{keyExpression}] = {valueExpression}; }} return map; }}";
+        return $"{{ var map = new Dictionary<{keyDisplay}, {valueDisplay}>(); for (int i = 0; i < {Registry.ElementCount}; i++) {{ map[{keyExpression}] = {valueExpression}; }} return map; }}";
     }
 
     public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
@@ -26,11 +26,11 @@ public sealed class DictionaryRuleProvider(BogusOptions options, Func<PropertyMe
 
         yield return "System.Collections.Generic";
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(string.Empty, key))) {
+        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, key))) {
             yield return ns;
         }
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(string.Empty, value))) {
+        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, value))) {
             yield return ns;
         }
     }
@@ -49,10 +49,10 @@ public sealed class DictionaryRuleProvider(BogusOptions options, Func<PropertyMe
         return false;
     }
 
-    private (string? Name, string? Expression) GetAttributes(ITypeSymbol type) {
-        var expression = generateExpression(new PropertyMetadata(string.Empty, type));
-        var name = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+    private (string? Display, string? Expression) GetAttributes(string name, ITypeSymbol type) {
+        var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+        var expression = generateExpression(new PropertyMetadata(name, type));
 
-        return (name, expression);
+        return (display, expression);
     }
 }
