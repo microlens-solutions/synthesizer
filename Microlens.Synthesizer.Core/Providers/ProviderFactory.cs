@@ -22,7 +22,8 @@ public static class ProviderFactory {
             new DateTimeOffsetRuleProvider(),
             new GuidRuleProvider(),
             new EnumRuleProvider(),
-            new CollectionRuleProvider(options, generateExpression, getRequiredNamespaces)
+            new CollectionRuleProvider(options, generateExpression, getRequiredNamespaces),
+            new DictionaryRuleProvider(options, generateExpression, getRequiredNamespaces)
         ];
     }
 }
