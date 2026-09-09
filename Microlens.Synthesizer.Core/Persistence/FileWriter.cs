@@ -1,13 +1,24 @@
-﻿using System.IO;
+﻿using Microlens.Synthesizer.Core.Shared;
+using System.IO;
 
 namespace Microlens.Synthesizer.Core.Persistence;
 
-public sealed class FileWriter {
-    public string Write(string inputFile, string outputPath, string generatedCode, string suffix = "Faker") {
+public static class FileWriter {
+    public static bool TryWrite(string inputFile, string outputPath, string generatedCode, out string outputFile) {
         var inputFileName = Path.GetFileNameWithoutExtension(inputFile);
-        var outputFile = Path.Combine(outputPath, $"{inputFileName}{suffix}.cs");
-        File.WriteAllText(outputFile, generatedCode);
+        var mode = Registry.OverwriteExisting ? FileMode.Create : FileMode.CreateNew;
 
-        return outputFile;
+        outputFile = Path.Combine(outputPath, $"{inputFileName}{Registry.FakerSuffix}{Registry.OutputExtension}");
+
+        try {
+            using var stream = new FileStream(outputFile, mode, FileAccess.Write, FileShare.None);
+            using var writer = new StreamWriter(stream);
+            writer.Write(generatedCode);
+
+            return true;
+        }
+        catch (IOException) when (!Registry.OverwriteExisting && File.Exists(outputFile)) {
+            return false;
+        }
     }
 }
