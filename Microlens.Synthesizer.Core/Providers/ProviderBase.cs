@@ -2,6 +2,6 @@
 
 public abstract class ProviderBase {
     protected string Generate(string valueFactory) {
-        return $"f.{valueFactory}());";
+        return $"f.{valueFactory}()";
     }
 }
