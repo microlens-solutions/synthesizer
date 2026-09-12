@@ -3,12 +3,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class ShortRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class DateTimeProvider : ProviderBase, IDataTypeProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type.SpecialType == SpecialType.System_Int16;
+        return metadata.Type.SpecialType == SpecialType.System_DateTime;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate("Random.Short");
+        return Generate("Date.Past");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class DateTimeOffsetRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class DateTimeOffsetProvider : ProviderBase, IDataTypeProvider {
     public bool CanHandle(PropertyMetadata metadata) {
         return metadata.Type is { Name: "DateTimeOffset", ContainingNamespace.Name: "System" };
     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class EnumRuleProvider : ProviderBase, IPropertyRuleProvider, INamespaceAwareRuleProvider {
+public sealed class EnumProvider : ProviderBase, IDataTypeProvider, INamespaceProvider {
     public bool CanHandle(PropertyMetadata metadata) {
         return metadata.Type.TypeKind == TypeKind.Enum;
     }

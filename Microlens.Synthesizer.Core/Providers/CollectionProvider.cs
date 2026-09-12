@@ -1,20 +1,20 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class CollectionRuleProvider(Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
+public sealed class CollectionProvider(IExpressionResolver resolver) : IDataTypeProvider, INamespaceProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return TryGetElementType(metadata.Type, out var type, out _) && generateExpression(new PropertyMetadata(metadata.Name, type)) is not null;
+        return TryGetElementType(metadata.Type, out var type, out _) && resolver.GenerateExpression(new PropertyMetadata(metadata.Name, type)) is not null;
     }
 
     public string Generate(PropertyMetadata metadata) {
         _ = TryGetElementType(metadata.Type, out var type, out var kind);
 
-        var expression = generateExpression(new PropertyMetadata(metadata.Name, type));
+        var expression = resolver.GenerateExpression(new PropertyMetadata(metadata.Name, type));
         var made = $"f.Make({Registry.ElementCount}, () => {expression})";
 
         return kind switch {
@@ -33,7 +33,7 @@ public sealed class CollectionRuleProvider(Func<PropertyMetadata, string?> gener
             yield return "System.Collections.Generic";
         }
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, type))) {
+        foreach (var ns in resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, type))) {
             yield return ns;
         }
     }

@@ -2,7 +2,7 @@
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public interface IPropertyRuleProvider {
+public interface IDataTypeProvider {
     bool CanHandle(PropertyMetadata metadata);
 
     string Generate(PropertyMetadata metadata);

@@ -3,12 +3,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class StringRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class DoubleProvider : ProviderBase, IDataTypeProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type.SpecialType == SpecialType.System_String;
+        return metadata.Type.SpecialType == SpecialType.System_Double;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate("Name.FullName");
+        return Generate("Random.Double");
     }
 }

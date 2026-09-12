@@ -7,6 +7,10 @@ public class Registry {
 
     public const string PackageId = "699538DE-9133-4B2E-AB4D-42766EFB0B46";
 
+    public const string MenuResourceId = "Menus.ctmenu";
+
+    public const int MenuResourceVersion = 1;
+
     public static readonly Guid MenuGroupId = new("8A6F8B16-7E2A-4C1B-9E7A-2E8A9B2C5F01");
 
     public const int CommandId = 0x0100;

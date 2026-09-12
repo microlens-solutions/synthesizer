@@ -3,12 +3,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class BoolRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class CharProvider : ProviderBase, IDataTypeProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type.SpecialType == SpecialType.System_Boolean;
+        return metadata.Type.SpecialType == SpecialType.System_Char;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate("Random.Bool");
+        return Generate("Random.Char");
     }
 }

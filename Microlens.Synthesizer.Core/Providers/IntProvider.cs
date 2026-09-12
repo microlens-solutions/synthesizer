@@ -1,13 +1,14 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class GuidRuleProvider : ProviderBase, IPropertyRuleProvider {
+public sealed class IntProvider : ProviderBase, IDataTypeProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type is { Name: "Guid", ContainingNamespace.Name: "System" };
+        return metadata.Type.SpecialType == SpecialType.System_Int32;
     }
 
     public string Generate(PropertyMetadata metadata) {
-        return Generate("Random.Guid");
+        return Generate("Random.Int");
     }
 }

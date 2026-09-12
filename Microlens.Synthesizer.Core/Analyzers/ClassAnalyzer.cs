@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Analyzers;
 
-public sealed class ClassAnalyzer {
+public sealed class ClassAnalyzer : IClassAnalyzer {
     public ClassMetadata Analyze(SemanticModel model) {
         var root = model.SyntaxTree.GetRoot();
         TypeDeclarationSyntax? syntax = null;

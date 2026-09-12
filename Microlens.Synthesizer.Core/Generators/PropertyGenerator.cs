@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Generators;
 
-public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> providers) {
+public sealed class PropertyGenerator(IEnumerable<IDataTypeProvider> providers) : IPropertyGenerator {
     public string Generate(PropertyMetadata metadata) {
         var expression = GenerateExpression(metadata);
 
@@ -17,8 +17,6 @@ public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> p
     }
 
     public string? GenerateExpression(PropertyMetadata metadata) {
-
-
         foreach (var provider in providers) {
             if (provider.CanHandle(metadata)) {
                 return metadata.Type.SpecialType == SpecialType.System_String && TryGetFactory(metadata.Name, out var factory)
@@ -36,8 +34,8 @@ public sealed class PropertyRuleGenerator(IReadOnlyList<IPropertyRuleProvider> p
                 continue;
             }
 
-            if (provider is INamespaceAwareRuleProvider namespaceAware) {
-                foreach (var ns in namespaceAware.GetRequiredNamespaces(metadata)) {
+            if (provider is INamespaceProvider namespaces) {
+                foreach (var ns in namespaces.GetRequiredNamespaces(metadata)) {
                     yield return ns;
                 }
             }

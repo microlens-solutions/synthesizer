@@ -1,14 +1,14 @@
 ﻿using Microlens.Synthesizer.Core.Metadata;
+using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
 
-public sealed class DictionaryRuleProvider(Func<PropertyMetadata, string?> generateExpression, Func<PropertyMetadata, IEnumerable<string>> getRequiredNamespaces) : IPropertyRuleProvider, INamespaceAwareRuleProvider {
+public sealed class DictionaryProvider(IExpressionResolver resolver) : IDataTypeProvider, INamespaceProvider {
     public bool CanHandle(PropertyMetadata metadata) {
-        return TryGetKeyValueTypes(metadata.Type, out var key, out var value) && generateExpression(new PropertyMetadata(metadata.Name, key)) is not null && generateExpression(new PropertyMetadata(metadata.Name, value)) is not null;
+        return TryGetKeyValueTypes(metadata.Type, out var key, out var value) && resolver.GenerateExpression(new PropertyMetadata(metadata.Name, key)) is not null && resolver.GenerateExpression(new PropertyMetadata(metadata.Name, value)) is not null;
     }
 
     public string Generate(PropertyMetadata metadata) {
@@ -26,11 +26,11 @@ public sealed class DictionaryRuleProvider(Func<PropertyMetadata, string?> gener
 
         yield return "System.Collections.Generic";
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, key))) {
+        foreach (var ns in resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, key))) {
             yield return ns;
         }
 
-        foreach (var ns in getRequiredNamespaces(new PropertyMetadata(metadata.Name, value))) {
+        foreach (var ns in resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, value))) {
             yield return ns;
         }
     }
@@ -51,7 +51,7 @@ public sealed class DictionaryRuleProvider(Func<PropertyMetadata, string?> gener
 
     private (string? Display, string? Expression) GetAttributes(string name, ITypeSymbol type) {
         var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-        var expression = generateExpression(new PropertyMetadata(name, type));
+        var expression = resolver.GenerateExpression(new PropertyMetadata(name, type));
 
         return (display, expression);
     }

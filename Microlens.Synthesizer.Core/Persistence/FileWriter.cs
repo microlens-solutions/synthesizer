@@ -3,8 +3,8 @@ using System.IO;
 
 namespace Microlens.Synthesizer.Core.Persistence;
 
-public static class FileWriter {
-    public static bool TryWrite(string inputFile, string outputPath, string generatedCode, out string outputFile) {
+public sealed class FileWriter : IFileWriter {
+    public bool TryWrite(string inputFile, string outputPath, string generatedCode, out string outputFile) {
         var inputFileName = Path.GetFileNameWithoutExtension(inputFile);
         var mode = Registry.OverwriteExisting ? FileMode.Create : FileMode.CreateNew;
 
