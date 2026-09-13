@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Microlens.Synthesizer.Core.Metadata;
+namespace Microlens.Synthesizer.Core.Domain;
 
 public sealed class ClassMetadata {
     public string Namespace { get; set; } = string.Empty;

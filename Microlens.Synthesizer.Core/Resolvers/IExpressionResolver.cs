@@ -1,4 +1,4 @@
-﻿using Microlens.Synthesizer.Core.Metadata;
+﻿using Microlens.Synthesizer.Core.Domain;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Resolvers;

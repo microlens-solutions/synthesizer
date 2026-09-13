@@ -13,13 +13,17 @@ public class Registry {
 
     public static readonly Guid MenuGroupId = new("8A6F8B16-7E2A-4C1B-9E7A-2E8A9B2C5F01");
 
-    public const int CommandId = 0x0100;
+    public const int FileCommandId = 0x0100;
+
+    public const int FolderCommandId = 0x0101;
+
+    public const int ProjectCommandId = 0x0102;
 
     public const string OutputExtension = ".cs";
 
     public const bool OverwriteExisting = true;
 
-    // BOGUS OPTIONS
+    public const int ElementCount = 3;
 
     public const string FakerSuffix = "Faker";
 
@@ -36,15 +40,29 @@ public class Registry {
         (["CompanyName", "Company"], "Company.CompanyName")
     ];
 
-    // RULE PROVIDER OPTIONS
-
-    public const int ElementCount = 3;
-
     public enum CollectionKind {
-        Array,
+        Array = 1,
 
-        List,
+        List = 2,
 
-        HashSet
+        HashSet = 3
     }
+
+    public enum CommandSource {
+        File = 1,
+
+        Folder = 2,
+
+        Project = 3
+    }
+
+    public enum ScaffoldStatus {
+        Generated = 1,
+
+        Skipped = 2,
+
+        Failed = 3
+    }
+
+    public static string ERROR_UNHANDLED_EXCEPTION = "Something went wrong:\n{0}";
 }

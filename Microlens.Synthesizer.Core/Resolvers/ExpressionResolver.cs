@@ -1,5 +1,5 @@
-﻿using Microlens.Synthesizer.Core.Generators;
-using Microlens.Synthesizer.Core.Metadata;
+﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Generators;
 using System;
 using System.Collections.Generic;
 

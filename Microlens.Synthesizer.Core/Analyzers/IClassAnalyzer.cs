@@ -1,4 +1,4 @@
-﻿using Microlens.Synthesizer.Core.Metadata;
+﻿using Microlens.Synthesizer.Core.Domain;
 using Microsoft.CodeAnalysis;
 
 namespace Microlens.Synthesizer.Core.Analyzers;
