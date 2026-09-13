@@ -63,6 +63,8 @@ public class Registry {
 
         Skipped = 2,
 
-        Failed = 3
+        Excluded = 3,
+
+        Failed = 4
     }
 }
