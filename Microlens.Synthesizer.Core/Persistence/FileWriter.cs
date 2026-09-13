@@ -22,7 +22,7 @@ public sealed class FileWriter : IFileWriter {
             return true;
         }
         catch (Exception exception) {
-            throw new ApplicationException(exception.Message);
+            throw new ApplicationException(exception.Message, exception);
         }
     }
 }

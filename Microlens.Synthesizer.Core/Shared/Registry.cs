@@ -27,6 +27,8 @@ public class Registry {
 
     public const string FakerSuffix = "Faker";
 
+    public const string ErrorUnhandledException = "Something went wrong:\n{0}";
+
     public static readonly (string[] Suffixes, string Factory)[] Mappings = [
         (["Email"], "Internet.Email"),
         (["PhoneNumber", "Phone", "Mobile"], "Phone.PhoneNumber"),
@@ -63,6 +65,4 @@ public class Registry {
 
         Failed = 3
     }
-
-    public static string ERROR_UNHANDLED_EXCEPTION = "Something went wrong:\n{0}";
 }
