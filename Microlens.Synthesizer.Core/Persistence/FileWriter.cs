@@ -9,10 +9,6 @@ public sealed class FileWriter : IFileWriter {
         var name = Path.GetFileNameWithoutExtension(input);
         output = Path.Combine(directory, $"{name}{Registry.FakerSuffix}{Registry.OutputExtension}");
 
-        if (!Registry.OverwriteExisting && File.Exists(output)) {
-            return false;
-        }
-
         try {
             var mode = Registry.OverwriteExisting ? FileMode.Create : FileMode.CreateNew;
             using var stream = new FileStream(output, mode, FileAccess.Write, FileShare.None);
@@ -20,6 +16,9 @@ public sealed class FileWriter : IFileWriter {
             writer.Write(code);
 
             return true;
+        }
+        catch (IOException) when (!Registry.OverwriteExisting && File.Exists(output)) {
+            return false;
         }
         catch (Exception exception) {
             throw new ApplicationException(exception.Message, exception);
