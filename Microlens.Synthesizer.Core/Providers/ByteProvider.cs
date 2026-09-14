@@ -1,14 +1,14 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
 using Microsoft.CodeAnalysis;
 
-namespace Microlens.Synthesizer.Core.Providers;
+namespace Microlens.Synthesizer.Core.Providers {
+    public sealed class ByteProvider : ProviderBase, IDataTypeProvider {
+        public bool CanHandle(PropertyMetadata metadata) {
+            return metadata.Type.SpecialType == SpecialType.System_Byte;
+        }
 
-public sealed class ByteProvider : ProviderBase, IDataTypeProvider {
-    public bool CanHandle(PropertyMetadata metadata) {
-        return metadata.Type.SpecialType == SpecialType.System_Byte;
-    }
-
-    public string Generate(PropertyMetadata metadata) {
-        return Generate("Random.Byte");
+        public string Generate(PropertyMetadata metadata) {
+            return Generate("Random.Byte");
+        }
     }
 }

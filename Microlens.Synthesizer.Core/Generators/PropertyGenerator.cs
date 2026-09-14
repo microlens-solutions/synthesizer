@@ -5,56 +5,62 @@ using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 
-namespace Microlens.Synthesizer.Core.Generators;
+namespace Microlens.Synthesizer.Core.Generators {
+    public sealed class PropertyGenerator : IPropertyGenerator {
+        private readonly IEnumerable<IDataTypeProvider> _providers;
 
-public sealed class PropertyGenerator(IEnumerable<IDataTypeProvider> providers) : IPropertyGenerator {
-    public string Generate(PropertyMetadata metadata) {
-        var expression = GenerateExpression(metadata);
-
-        return expression is null
-            ? $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})"
-            : $"RuleFor(x => x.{metadata.Name}, f => {expression});";
-    }
-
-    public string? GenerateExpression(PropertyMetadata metadata) {
-        foreach (var provider in providers) {
-            if (provider.CanHandle(metadata)) {
-                return metadata.Type.SpecialType == SpecialType.System_String && TryGetFactory(metadata.Name, out var factory)
-                    ? $"f.{factory}()"
-                    : provider.Generate(metadata);
-            }
+        public PropertyGenerator(IEnumerable<IDataTypeProvider> providers) {
+            _providers = providers;
         }
 
-        return null;
-    }
+        public string Generate(PropertyMetadata metadata) {
+            var expression = GenerateExpression(metadata);
 
-    public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
-        foreach (var provider in providers) {
-            if (!provider.CanHandle(metadata)) {
-                continue;
-            }
+            return expression is null
+                ? $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})"
+                : $"RuleFor(x => x.{metadata.Name}, f => {expression});";
+        }
 
-            if (provider is INamespaceProvider namespaces) {
-                foreach (var ns in namespaces.GetRequiredNamespaces(metadata)) {
-                    yield return ns;
+        public string GenerateExpression(PropertyMetadata metadata) {
+            foreach (var provider in _providers) {
+                if (provider.CanHandle(metadata)) {
+                    return metadata.Type.SpecialType == SpecialType.System_String && TryGetFactory(metadata.Name, out var factory)
+                        ? $"f.{factory}()"
+                        : provider.Generate(metadata);
                 }
             }
 
-            yield break;
+            return null;
         }
-    }
 
-    private static bool TryGetFactory(string propertyName, out string? factory) {
-        foreach (var (suffixes, mappedFactory) in Registry.Mappings) {
-            foreach (var suffix in suffixes) {
-                if (propertyName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase) || propertyName.EndsWith(suffix + "s", StringComparison.OrdinalIgnoreCase)) {
-                    factory = mappedFactory;
-                    return true;
+        public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
+            foreach (var provider in _providers) {
+                if (!provider.CanHandle(metadata)) {
+                    continue;
                 }
+
+                if (provider is INamespaceProvider namespaces) {
+                    foreach (var ns in namespaces.GetRequiredNamespaces(metadata)) {
+                        yield return ns;
+                    }
+                }
+
+                yield break;
             }
         }
 
-        factory = null;
-        return false;
+        private static bool TryGetFactory(string propertyName, out string factory) {
+            foreach (var (suffixes, mappedFactory) in Registry.Mappings) {
+                foreach (var suffix in suffixes) {
+                    if (propertyName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase) || propertyName.EndsWith(suffix + "s", StringComparison.OrdinalIgnoreCase)) {
+                        factory = mappedFactory;
+                        return true;
+                    }
+                }
+            }
+
+            factory = null;
+            return false;
+        }
     }
 }

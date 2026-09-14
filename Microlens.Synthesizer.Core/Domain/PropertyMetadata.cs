@@ -1,9 +1,14 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace Microlens.Synthesizer.Core.Domain;
+namespace Microlens.Synthesizer.Core.Domain {
+    public sealed class PropertyMetadata {
+        public string Name { get; }
 
-public sealed class PropertyMetadata(string name, ITypeSymbol type) {
-    public string Name { get; } = name;
+        public ITypeSymbol Type { get; }
 
-    public ITypeSymbol Type { get; } = type;
+        public PropertyMetadata(string name, ITypeSymbol type) {
+            Name = name;
+            Type = type;
+        }
+    }
 }

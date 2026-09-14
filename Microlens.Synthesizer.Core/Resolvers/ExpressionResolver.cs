@@ -3,14 +3,20 @@ using Microlens.Synthesizer.Core.Generators;
 using System;
 using System.Collections.Generic;
 
-namespace Microlens.Synthesizer.Core.Resolvers;
+namespace Microlens.Synthesizer.Core.Resolvers {
+    public sealed class ExpressionResolver : IExpressionResolver {
+        private readonly Lazy<IPropertyGenerator> _generator;
 
-public sealed class ExpressionResolver(Lazy<IPropertyGenerator> generator) : IExpressionResolver {
-    public string? GenerateExpression(PropertyMetadata metadata) {
-        return generator.Value.GenerateExpression(metadata);
-    }
+        public ExpressionResolver(Lazy<IPropertyGenerator> generator) {
+            _generator = generator;
+        }
 
-    public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
-        return generator.Value.GetRequiredNamespaces(metadata);
+        public string GenerateExpression(PropertyMetadata metadata) {
+            return _generator.Value.GenerateExpression(metadata);
+        }
+
+        public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
+            return _generator.Value.GetRequiredNamespaces(metadata);
+        }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
 
-namespace Microlens.Synthesizer.Core.Providers;
+namespace Microlens.Synthesizer.Core.Providers {
+    public interface IDataTypeProvider {
+        bool CanHandle(PropertyMetadata metadata);
 
-public interface IDataTypeProvider {
-    bool CanHandle(PropertyMetadata metadata);
-
-    string Generate(PropertyMetadata metadata);
+        string Generate(PropertyMetadata metadata);
+    }
 }
