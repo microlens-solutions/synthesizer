@@ -21,17 +21,18 @@ namespace Microlens.Synthesizer.Core.Providers {
             _ = TryGetElementType(metadata.Type, out var type, out var kind);
 
             var expression = _resolver.GenerateExpression(new PropertyMetadata(metadata.Name, type));
-            var made = $"f.Make({Registry.ElementCount}, () => {expression})";
+            var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+            var make = $"f.Make({Registry.ElementCount}, () => {expression})";
 
             switch (kind) {
                 case Registry.CollectionKind.Array:
-                    return made + ".ToArray()";
+                    return $"new List<{display}>({make}).ToArray()";
 
                 case Registry.CollectionKind.HashSet:
-                    return $"new HashSet<{type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}>({made})";
+                    return $"new HashSet<{display}>({make})";
 
                 case Registry.CollectionKind.List:
-                    return made;
+                    return $"new List<{display}>({make})";
 
                 default:
                     throw new ApplicationException($"Unsupported collection kind for '{metadata.Name}'.");
@@ -39,13 +40,11 @@ namespace Microlens.Synthesizer.Core.Providers {
         }
 
         public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
-            if (!TryGetElementType(metadata.Type, out var type, out var kind)) {
+            if (!TryGetElementType(metadata.Type, out var type, out _)) {
                 yield break;
             }
 
-            if (kind == Registry.CollectionKind.HashSet) {
-                yield return "System.Collections.Generic";
-            }
+            yield return "System.Collections.Generic";
 
             foreach (var ns in _resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, type))) {
                 yield return ns;

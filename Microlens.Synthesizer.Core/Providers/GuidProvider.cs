@@ -5,9 +5,9 @@ using System.Collections.Generic;
 namespace Microlens.Synthesizer.Core.Providers {
     public sealed class GuidProvider : ProviderBase, IDataTypeProvider, INamespaceProvider {
         public bool CanHandle(PropertyMetadata metadata) {
-            return metadata != null && metadata.Type != null && metadata.Type.ContainingNamespace != null
-                && string.IsNullOrWhiteSpace(metadata.Type.Name) && string.IsNullOrWhiteSpace(metadata.Type.ContainingNamespace.Name)
-                && string.Equals(metadata.Type.Name, "Guid", StringComparison.OrdinalIgnoreCase) && string.Equals(metadata.Type.ContainingNamespace.Name, "System", StringComparison.OrdinalIgnoreCase);
+            return metadata?.Type?.ContainingNamespace != null
+                && string.Equals(metadata.Type.Name, "Guid", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(metadata.Type.ContainingNamespace.Name, "System", StringComparison.OrdinalIgnoreCase);
         }
 
         public string Generate(PropertyMetadata metadata) {
