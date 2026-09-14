@@ -2,6 +2,7 @@
 using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers;
@@ -20,7 +21,8 @@ public sealed class CollectionProvider(IExpressionResolver resolver) : IDataType
         return kind switch {
             Registry.CollectionKind.Array => $"{made}.ToArray()",
             Registry.CollectionKind.HashSet => $"new HashSet<{type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)}>({made})",
-            _ => made
+            Registry.CollectionKind.List => made,
+            _ => throw new ApplicationException($"Unsupported collection kind for '{metadata.Name}'.")
         };
     }
 
