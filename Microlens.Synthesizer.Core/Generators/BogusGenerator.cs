@@ -1,5 +1,7 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
 using Microlens.Synthesizer.Core.Shared;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,7 +17,7 @@ namespace Microlens.Synthesizer.Core.Generators {
             var usings = GenerateUsings(metadata);
             var rules = GenerateRules(metadata);
 
-            return $@"
+            var raw = $@"
 using Bogus;
 {usings}
 namespace {metadata.Namespace} {{
@@ -26,6 +28,8 @@ namespace {metadata.Namespace} {{
     }}
 }}
 ";
+
+            return CSharpSyntaxTree.ParseText(raw).GetRoot().NormalizeWhitespace().ToFullString();
         }
 
         private string GenerateUsings(ClassMetadata metadata) {
@@ -49,20 +53,9 @@ namespace {metadata.Namespace} {{
 
         private string GenerateRules(ClassMetadata metadata) {
             var builder = new StringBuilder();
-            int count = 0;
 
             foreach (var property in metadata.Properties) {
-                count++;
-
-                if (count > 1) {
-                    _ = builder.Append("\t\t");
-                }
-
-                _ = builder.Append(_generator.Generate(property));
-
-                if (count < metadata.Properties.Count) {
-                    _ = builder.Append("\n");
-                }
+                _ = builder.Append(_generator.Generate(property)).Append('\n');
             }
 
             return builder.ToString();
