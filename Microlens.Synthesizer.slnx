@@ -1,6 +1,6 @@
 <Solution>
-  <Project Path="Microlens.Synthesizer.Core/Microlens.Synthesizer.Core.csproj" Id="bdee8505-37c9-47e0-b5f9-0348a0e1db27" />
-  <Project Path="Microlens.Synthesizer.Test/Microlens.Synthesizer.Test.csproj" Id="b4be7ae5-1dbd-4565-a19b-59dd45fb6454" />
+  <Project Path="Microlens.Synthesizer.Core/Microlens.Synthesizer.Core.csproj" />
+  <Project Path="Microlens.Synthesizer.Test/Microlens.Synthesizer.Test.csproj" />
   <Project Path="Microlens.Synthesizer.V6/Microlens.Synthesizer.V6.csproj">
     <Deploy />
   </Project>
