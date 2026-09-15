@@ -1,5 +1,5 @@
-﻿using Microlens.Synthesizer.Core.Configurations;
-using Microlens.Synthesizer.Core.Domain;
+﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;

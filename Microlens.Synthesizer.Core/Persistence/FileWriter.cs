@@ -1,4 +1,4 @@
-﻿using Microlens.Synthesizer.Core.Configurations;
+﻿using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Shared;
 using System;
 using System.IO;

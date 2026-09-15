@@ -1,4 +1,4 @@
-﻿namespace Microlens.Synthesizer.Core.Configurations {
+﻿namespace Microlens.Synthesizer.Core.Options {
     public interface IOptions {
         bool OverwriteExisting { get; }
 
