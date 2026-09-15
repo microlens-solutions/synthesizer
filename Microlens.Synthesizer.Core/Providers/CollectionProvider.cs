@@ -1,4 +1,5 @@
-﻿using Microlens.Synthesizer.Core.Domain;
+﻿using Microlens.Synthesizer.Core.Configurations;
+using Microlens.Synthesizer.Core.Domain;
 using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
@@ -7,9 +8,12 @@ using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers {
     public sealed class CollectionProvider : IDataTypeProvider, INamespaceProvider {
+        private readonly IOptions _options;
+
         private readonly IExpressionResolver _resolver;
 
-        public CollectionProvider(IExpressionResolver resolver) {
+        public CollectionProvider(IOptions options, IExpressionResolver resolver) {
+            _options = options;
             _resolver = resolver;
         }
 
@@ -22,7 +26,7 @@ namespace Microlens.Synthesizer.Core.Providers {
 
             var expression = _resolver.GenerateExpression(new PropertyMetadata(metadata.Name, type));
             var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
-            var make = $"f.Make({Registry.ElementCount}, () => {expression})";
+            var make = $"f.Make({_options.ElementCount}, () => {expression})";
 
             switch (kind) {
                 case Registry.CollectionKind.Array:

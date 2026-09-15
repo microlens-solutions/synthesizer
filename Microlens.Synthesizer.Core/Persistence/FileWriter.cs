@@ -1,15 +1,22 @@
-﻿using Microlens.Synthesizer.Core.Shared;
+﻿using Microlens.Synthesizer.Core.Configurations;
+using Microlens.Synthesizer.Core.Shared;
 using System;
 using System.IO;
 
 namespace Microlens.Synthesizer.Core.Persistence {
     public sealed class FileWriter : IFileWriter {
+        private readonly IOptions _options;
+
+        public FileWriter(IOptions options) {
+            _options = options;
+        }
+
         public bool TryWrite(string input, string directory, string code, out string output) {
             var name = Path.GetFileNameWithoutExtension(input);
-            output = Path.Combine(directory, $"{name}{Registry.FakerSuffix}{Registry.OutputExtension}");
+            output = Path.Combine(directory, $"{name}{_options.FakerSuffix}{Registry.OutputExtension}");
 
             try {
-                var mode = Registry.OverwriteExisting ? FileMode.Create : FileMode.CreateNew;
+                var mode = _options.OverwriteExisting ? FileMode.Create : FileMode.CreateNew;
 
                 using (var stream = new FileStream(output, mode, FileAccess.Write, FileShare.None)) {
                     using (var writer = new StreamWriter(stream)) {
@@ -18,7 +25,7 @@ namespace Microlens.Synthesizer.Core.Persistence {
                     }
                 }
             }
-            catch (IOException) when (!Registry.OverwriteExisting && File.Exists(output)) {
+            catch (IOException) when (!_options.OverwriteExisting && File.Exists(output)) {
                 return false;
             }
             catch (Exception exception) {

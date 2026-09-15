@@ -1,5 +1,5 @@
-﻿using Microlens.Synthesizer.Core.Domain;
-using Microlens.Synthesizer.Core.Shared;
+﻿using Microlens.Synthesizer.Core.Configurations;
+using Microlens.Synthesizer.Core.Domain;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Generic;
@@ -7,9 +7,12 @@ using System.Text;
 
 namespace Microlens.Synthesizer.Core.Generators {
     public sealed class BogusGenerator : IBogusGenerator {
+        private readonly IOptions _options;
+
         private readonly IPropertyGenerator _generator;
 
-        public BogusGenerator(IPropertyGenerator generator) {
+        public BogusGenerator(IOptions options, IPropertyGenerator generator) {
+            _options = options;
             _generator = generator;
         }
 
@@ -17,17 +20,16 @@ namespace Microlens.Synthesizer.Core.Generators {
             var usings = GenerateUsings(metadata);
             var rules = GenerateRules(metadata);
 
-            var raw = $@"
-using Bogus;
+            var raw =
+$@"using Bogus;
 {usings}
 namespace {metadata.Namespace} {{
-    public class {metadata.ClassName}{Registry.FakerSuffix} : Faker<{metadata.ClassName}> {{
-        public {metadata.ClassName}{Registry.FakerSuffix}() {{
+    public class {metadata.ClassName}{_options.FakerSuffix} : Faker<{metadata.ClassName}> {{
+        public {metadata.ClassName}{_options.FakerSuffix}() {{
             {rules}
         }}
     }}
-}}
-";
+}}";
 
             return CSharpSyntaxTree.ParseText(raw).GetRoot().NormalizeWhitespace().ToFullString();
         }

@@ -20,11 +20,11 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OutputExtension = ".cs";
 
-        public const bool OverwriteExisting = true;
+        public const bool OptionsOverwriteExistingDefaultValue = true;
 
-        public const int ElementCount = 3;
+        public const int OptionsElementCountDefaultValue = 3;
 
-        public const string FakerSuffix = "Faker";
+        public const string OptionsFakerSuffixDefaultValue = "Faker";
 
         public const string ErrorUnhandledException = "Something went wrong:\n{0}";
 

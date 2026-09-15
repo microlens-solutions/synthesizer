@@ -1,14 +1,17 @@
-﻿using Microlens.Synthesizer.Core.Domain;
+﻿using Microlens.Synthesizer.Core.Configurations;
+using Microlens.Synthesizer.Core.Domain;
 using Microlens.Synthesizer.Core.Resolvers;
-using Microlens.Synthesizer.Core.Shared;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Providers {
     public sealed class DictionaryProvider : IDataTypeProvider, INamespaceProvider {
+        private readonly IOptions _options;
+
         private readonly IExpressionResolver _resolver;
 
-        public DictionaryProvider(IExpressionResolver resolver) {
+        public DictionaryProvider(IOptions options, IExpressionResolver resolver) {
+            _options = options;
             _resolver = resolver;
         }
 
@@ -21,7 +24,7 @@ namespace Microlens.Synthesizer.Core.Providers {
             var (keyDisplay, keyExpression) = GetAttributes(metadata.Name, key);
             var (valueDisplay, valueExpression) = GetAttributes(metadata.Name, value);
 
-            return $"{{ var map = new Dictionary<{keyDisplay}, {valueDisplay}>(); for (int i = 0; i < {Registry.ElementCount}; i++) {{ map[{keyExpression}] = {valueExpression}; }} return map; }}";
+            return $"{{ var map = new Dictionary<{keyDisplay}, {valueDisplay}>(); for (int i = 0; i < {_options.ElementCount}; i++) {{ map[{keyExpression}] = {valueExpression}; }} return map; }}";
         }
 
         public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
