@@ -26,7 +26,9 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsFakerSuffixDefaultValue = "Faker";
 
-        public const string OptionsLogFileNameDefaultValue = "Microlens.Synthesizer.{0}.log";
+        public const string OptionsLogFileNameDefaultValue = "Microlens.Synthesizer.{0:yyyyMMdd}.log";
+
+        public const string OptionsLogFilePathBrowseDescription = "Select the folder where the log file will be saved.";
 
         public const string OptionsLogFilePathDefaultValue = "";
 
