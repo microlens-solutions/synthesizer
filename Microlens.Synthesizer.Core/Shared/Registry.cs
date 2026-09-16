@@ -26,6 +26,10 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsFakerSuffixDefaultValue = "Faker";
 
+        public const string OptionsLogFileNameDefaultValue = "Microlens.Synthesizer.{0}.log";
+
+        public const string OptionsLogFilePathDefaultValue = "";
+
         public const string ErrorUnhandledException = "Something went wrong:\n{0}";
 
         public static readonly (string[] Suffixes, string Factory)[] Mappings = {
@@ -65,6 +69,16 @@ namespace Microlens.Synthesizer.Core.Shared {
             Excluded = 3,
 
             Failed = 4
+        }
+
+        public enum LogGenerationMode {
+            EveryTime = 1,
+
+            MultipleFilesOnly = 2,
+
+            SkippedOrFailed = 3,
+
+            FailedOnly = 4
         }
     }
 }
