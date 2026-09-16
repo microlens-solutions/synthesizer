@@ -10,6 +10,6 @@ namespace Microlens.Synthesizer.Core.Options {
 
         string LogFilePath { get; }
 
-        Registry.LogGenerationMode LogGenerationMode { get; }
+        Registry.LogWritingMode LogWritingMode { get; }
     }
 }

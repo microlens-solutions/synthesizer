@@ -30,6 +30,22 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsLogFilePathDefaultValue = "";
 
+        public const LogWritingMode OptionsLogWritingModeDefaultValue = LogWritingMode.SkippedOrFailed;
+
+        public const string OptionsCategoryScaffoldingLabel = "Scaffolding";
+
+        public const string OptionsCategoryLoggingLabel = "Logging";
+
+        public const string OptionsOverwriteExistingLabel = "Overwrite Existing Fakers";
+
+        public const string OptionsElementCountLabel = "Collection Element Count";
+
+        public const string OptionsFakerSuffixLabel = "Faker Class Suffix";
+
+        public const string OptionsLogFilePathLabel = "File Path";
+
+        public const string OptionsLogWritingModeLabel = "Mode";
+
         public const string ErrorUnhandledException = "Something went wrong:\n{0}";
 
         public static readonly (string[] Suffixes, string Factory)[] Mappings = {
@@ -71,7 +87,7 @@ namespace Microlens.Synthesizer.Core.Shared {
             Failed = 4
         }
 
-        public enum LogGenerationMode {
+        public enum LogWritingMode {
             EveryTime = 1,
 
             MultipleFilesOnly = 2,
