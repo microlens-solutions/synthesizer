@@ -46,6 +46,16 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsLogWritingModeLabel = "Mode";
 
+        public const string OptionsOverwriteExistingDescription = "When enabled, regenerating a Faker overwrites the existing file. When disabled, generation is skipped if the file already exists.";
+
+        public const string OptionsElementCountDescription = "Number of elements generated for array, List<T>, HashSet<T>, and Dictionary<TKey, TValue> properties.";
+
+        public const string OptionsFakerSuffixDescription = "Suffix appended to the source class name to build the generated Faker's class name and output file name.";
+
+        public const string OptionsLogFilePathDescription = "Full path of the log file. When left blank, the log is written next to the solution file.";
+
+        public const string OptionsLogWritingModeDescription = "Controls when an entry is written to the log file.";
+
         public const string ErrorUnhandledException = "Something went wrong:\n{0}";
 
         public static readonly (string[] Suffixes, string Factory)[] Mappings = {
