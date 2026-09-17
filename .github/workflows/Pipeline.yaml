@@ -31,7 +31,7 @@ jobs:
       run: dotnet restore ./Microlens.Synthesizer.slnx
 
     - name: 🛠️ Build Solution
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build ./Microlens.Synthesizer.slnx --configuration Release --no-restore
 
     - name: 🏷️ Extract Version
       id: get_version
