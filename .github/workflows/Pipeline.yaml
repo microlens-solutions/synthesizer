@@ -28,7 +28,7 @@ jobs:
           10.0.x
 
     - name: 🔄 Restore Dependencies
-      run: dotnet restore
+      run: dotnet restore ./Microlens.Synthesizer.slnx
 
     - name: 🛠️ Build Solution
       run: dotnet build --configuration Release --no-restore
