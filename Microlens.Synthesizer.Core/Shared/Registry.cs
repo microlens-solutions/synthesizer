@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Microlens.Synthesizer.Core.Shared {
     public class Registry {
@@ -26,9 +27,7 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsFakerSuffixDefaultValue = "Faker";
 
-        public const string OptionsLogFileNameDefaultValue = "Microlens.Synthesizer.{0:yyyyMMdd}.log";
-
-        public const string OptionsLogFilePathBrowseDescription = "Select the folder where the log file will be saved.";
+        public const string OptionsLogFileNameDefaultValue = "microlens-synthesizer-{0:yyyyMMdd}.log";
 
         public const string OptionsLogFilePathDefaultValue = "";
 
@@ -90,12 +89,16 @@ namespace Microlens.Synthesizer.Core.Shared {
         }
 
         public enum ScaffoldStatus {
-            Generated = 1,
+            [Description("Generated (and included in project)")]
+            Included = 1,
 
-            Skipped = 2,
+            [Description("Generated (but excluded from project)")]
+            Excluded = 2,
 
-            Excluded = 3,
+            [Description("Skipped (as already exists)")]
+            Skipped = 3,
 
+            [Description("Failed (couldn't generate)")]
             Failed = 4
         }
 
