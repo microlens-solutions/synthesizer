@@ -167,7 +167,7 @@ Providers are resolved in registration order — the first `CanHandle` match win
 ## Comparison
 
 | Capability | `Microlens.Synthesizer.Core` | Manual `Faker<T>` Authoring |
-|---|---|---|
+| :--- | :--- | :--- |
 | Property discovery | Automatic, via `SemanticModel` | Manual |
 | Convention-based mapping (`Email`, `PhoneNumber`, etc.) | Yes | Manual |
 | Collection / dictionary element rules | Generated automatically | Manual |
@@ -196,7 +196,5 @@ If you need fake data generated at runtime without a compiled `Faker<T>` class, 
 ## License
 
 Licensed under the **Apache License 2.0**.
-
-See the [LICENSE](LICENSE) file for details.
 
 ---
