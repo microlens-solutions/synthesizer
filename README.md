@@ -195,7 +195,8 @@ If you need fake data generated at runtime without a compiled `Faker<T>` class, 
 
 ## License
 
-Licensed under the **Apache License 2.0**.  
-See the terms included with this package.
+Licensed under the **Apache License 2.0**.
+
+See the [LICENSE](LICENSE) file for details.
 
 ---

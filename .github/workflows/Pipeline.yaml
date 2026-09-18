@@ -28,10 +28,10 @@ jobs:
           10.0.x
 
     - name: 🔄 Restore Dependencies
-      run: dotnet restore Microlens.Synthesizer.Core/Microlens.Synthesizer.Core.csproj
+      run: dotnet restore
 
     - name: 🛠️ Build Solution
-      run: dotnet build Microlens.Synthesizer.Core/Microlens.Synthesizer.Core.csproj --configuration Release --no-restore
+      run: dotnet build --configuration Release --no-restore
 
     - name: 🏷️ Extract Version
       id: get_version
