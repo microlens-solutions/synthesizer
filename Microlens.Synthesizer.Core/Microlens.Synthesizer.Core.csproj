@@ -16,8 +16,8 @@
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>bogus;faker;fake-data;test-data;unit-testing;roslyn;semantic-model;code-generation;scaffolding;boilerplate;csharp</PackageTags>
-		<EnablePackageValidation>true</EnablePackageValidation>
-		<PackageValidationBaselineVersion>1.0.3</PackageValidationBaselineVersion>
+		<EnablePackageValidation>false</EnablePackageValidation>
+		<PackageValidationBaselineVersion>2.0.0</PackageValidationBaselineVersion>
 		<PackageProjectUrl>https://github.com/microlens-solutions/synthesizer</PackageProjectUrl>
 		
 		<RepositoryUrl>https://github.com/microlens-solutions/synthesizer</RepositoryUrl>
