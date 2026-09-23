@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Extensions;
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 
@@ -9,13 +10,11 @@ namespace Microlens.Synthesizer.Core.Providers {
         }
 
         public string Generate(PropertyMetadata metadata) {
-            return Generate($"PickRandom<{metadata.Type.Name}>");
+            return Generate($"PickRandom<{metadata.Type.ToDisplayName()}>");
         }
 
         public IEnumerable<string> GetRequiredNamespaces(PropertyMetadata metadata) {
-            if (!metadata.Type.ContainingNamespace.IsGlobalNamespace) {
-                yield return metadata.Type.ContainingNamespace.ToDisplayString();
-            }
+            return metadata.Type.GetReferencedNamespaces();
         }
     }
 }

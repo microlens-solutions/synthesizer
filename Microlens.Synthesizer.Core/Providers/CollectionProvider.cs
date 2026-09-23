@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Extensions;
 using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Resolvers;
 using Microlens.Synthesizer.Core.Shared;
@@ -25,7 +26,7 @@ namespace Microlens.Synthesizer.Core.Providers {
             _ = TryGetElementType(metadata.Type, out var type, out var kind);
 
             var expression = _resolver.GenerateExpression(new PropertyMetadata(metadata.Name, type));
-            var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+            var display = type.ToDisplayName();
             var make = $"f.Make({_options.ElementCount}, () => {expression})";
 
             switch (kind) {
@@ -49,6 +50,10 @@ namespace Microlens.Synthesizer.Core.Providers {
             }
 
             yield return "System.Collections.Generic";
+
+            foreach (var ns in type.GetReferencedNamespaces()) {
+                yield return ns;
+            }
 
             foreach (var ns in _resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, type))) {
                 yield return ns;

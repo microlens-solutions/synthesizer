@@ -1,8 +1,6 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Extensions;
 using Microlens.Synthesizer.Core.Providers;
-using Microlens.Synthesizer.Core.Shared;
-using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Generic;
 
 namespace Microlens.Synthesizer.Core.Generators {
@@ -17,16 +15,14 @@ namespace Microlens.Synthesizer.Core.Generators {
             var expression = GenerateExpression(metadata);
 
             return expression is null
-                ? $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat)})"
-                : $"RuleFor(x => x.{metadata.Name}, f => {expression});";
+                ? $"// TODO: {metadata.Name} ({metadata.Type.ToDisplayName()})"
+                : $"RuleFor(x => x.{metadata.Name.ToIdentifier()}, f => {expression});";
         }
 
         public string GenerateExpression(PropertyMetadata metadata) {
             foreach (var provider in _providers) {
                 if (provider.CanHandle(metadata)) {
-                    return metadata.Type.SpecialType == SpecialType.System_String && TryGetFactory(metadata.Name, out var factory)
-                        ? $"f.{factory}()"
-                        : provider.Generate(metadata);
+                    return provider.Generate(metadata);
                 }
             }
 
@@ -47,20 +43,6 @@ namespace Microlens.Synthesizer.Core.Generators {
 
                 yield break;
             }
-        }
-
-        private static bool TryGetFactory(string propertyName, out string factory) {
-            foreach (var (suffixes, mappedFactory) in Registry.Mappings) {
-                foreach (var suffix in suffixes) {
-                    if (propertyName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase) || propertyName.EndsWith(suffix + "s", StringComparison.OrdinalIgnoreCase)) {
-                        factory = mappedFactory;
-                        return true;
-                    }
-                }
-            }
-
-            factory = null;
-            return false;
         }
     }
 }

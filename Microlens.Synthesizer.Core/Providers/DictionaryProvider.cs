@@ -1,4 +1,5 @@
 ﻿using Microlens.Synthesizer.Core.Domain;
+using Microlens.Synthesizer.Core.Extensions;
 using Microlens.Synthesizer.Core.Options;
 using Microlens.Synthesizer.Core.Resolvers;
 using Microsoft.CodeAnalysis;
@@ -34,6 +35,14 @@ namespace Microlens.Synthesizer.Core.Providers {
 
             yield return "System.Collections.Generic";
 
+            foreach (var ns in key.GetReferencedNamespaces()) {
+                yield return ns;
+            }
+
+            foreach (var ns in value.GetReferencedNamespaces()) {
+                yield return ns;
+            }
+
             foreach (var ns in _resolver.GetRequiredNamespaces(new PropertyMetadata(metadata.Name, key))) {
                 yield return ns;
             }
@@ -58,7 +67,7 @@ namespace Microlens.Synthesizer.Core.Providers {
         }
 
         private (string Display, string Expression) GetAttributes(string name, ITypeSymbol type) {
-            var display = type.ToDisplayString(SymbolDisplayFormat.MinimallyQualifiedFormat);
+            var display = type.ToDisplayName();
             var expression = _resolver.GenerateExpression(new PropertyMetadata(name, type));
 
             return (display, expression);

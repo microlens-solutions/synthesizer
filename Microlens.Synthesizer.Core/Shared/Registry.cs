@@ -51,7 +51,7 @@ namespace Microlens.Synthesizer.Core.Shared {
 
         public const string OptionsElementCountDescription = "Number of elements generated for array, List<T>, HashSet<T>, and Dictionary<TKey, TValue> properties.";
 
-        public const string OptionsFakerSuffixDescription = "Suffix appended to the source class name to build the generated Faker's class name and output file name.";
+        public const string OptionsFakerSuffixDescription = "Suffix appended to the source class name to build the generated Faker's class name, and to the source file name to build the output file name.";
 
         public const string OptionsLogFilePathDescription = "Full path of the log file. When left blank, the log is written next to the solution file.";
 

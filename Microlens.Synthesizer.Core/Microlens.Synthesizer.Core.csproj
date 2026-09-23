@@ -3,8 +3,8 @@
 	<PropertyGroup>
 		<Authors>Microlens</Authors>
 		<Copyright>Copyright © $([System.DateTime]::Now.Year) Microlens</Copyright>
-		<Description>Roslyn-based analyzer and code generator that scaffolds strongly-typed Bogus Faker classes from C# classes and records, with support for enums, collections, dictionaries, and convention-based string values.</Description>
-		
+		<Description>Roslyn semantic-model library that generates compilable Bogus Faker&lt;T&gt; source from C# classes and record classes, covering inherited properties, generic types, enums, arrays, lists, hash sets, dictionaries and convention-based string values, extensible through custom type providers.</Description>
+
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<OutputType>Library</OutputType>
 		<LangVersion>7.3</LangVersion>
@@ -14,10 +14,12 @@
 
 		<PackageId>Microlens.Synthesizer.Core</PackageId>
 		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-		<PackageProjectUrl>https://github.com/microlens-solutions/synthesizer</PackageProjectUrl>
-		<RepositoryType>git</RepositoryType>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
-		<PackageTags>bogus;faker;roslyn;scaffolding;boilerplate;semantic-model;code-generation;test-data;</PackageTags>
+		<PackageTags>bogus;faker;fake-data;test-data;unit-testing;roslyn;semantic-model;code-generation;scaffolding;boilerplate;csharp</PackageTags>
+		<PackageProjectUrl>https://github.com/microlens-solutions/synthesizer</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/microlens-solutions/synthesizer</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<ContinuousIntegrationBuild Condition="'$(GITHUB_ACTIONS)' == 'true'">true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
